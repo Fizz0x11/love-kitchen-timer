@@ -145,51 +145,75 @@
 
   /* ================= 九道湘菜数据 ================= */
   /* 阶段秒数：prep 备菜 / cook 烹饪 / serve 上桌 */
+  /* raw/cooked 为写实美食图提示词（参照真实湘菜照片风格生成） */
+  var IMG_API = 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?image_size=square&prompt=';
+  function foodImg(p) { return IMG_API + encodeURIComponent(p); }
+  var STYLE_RAW = ', raw fresh ingredients neatly arranged on a light wooden cutting board, top-down view, warm soft kitchen light, photorealistic food photography, high detail, no text';
+  var STYLE_DISH = ', served on clean white ceramic tableware, top-down view, warm soft light, photorealistic Chinese food photography, appetizing, glossy, high detail, no text';
+
   var DISHES = [
     {
       id: 'yutou', name: '剁椒鱼头', emoji: '🐟', spicy: 3,
       line: '鱼头要挑胖头鱼，剁椒要自家坛子里腌足的——这一口鲜辣，是湖南人的乡愁。',
-      phases: [180, 780, 120]
+      phases: [180, 780, 120],
+      raw: 'one fresh raw fish head split open, small bowl of chopped red chili peppers beside it',
+      cooked: 'Hunan steamed fish head covered with a thick layer of bright red chopped chili peppers, glossy chili oil, chopped scallions on top'
     },
     {
       id: 'lcr', name: '辣椒炒肉', emoji: '🥩', spicy: 2,
       line: '五花肉要煸出猪油香，螺丝椒要拍裂了再下锅——这道菜，是湖南人家灶台上的家常便饭，也是最勾人的那口。',
-      phases: [180, 480, 60]
+      phases: [180, 480, 60],
+      raw: 'sliced raw pork belly with visible fat layers and fresh green screw peppers',
+      cooked: 'Hunan stir-fried pork slices with blistered green peppers, glossy savory sauce, slight char on edges'
     },
     {
       id: 'hongsao', name: '毛氏红烧肉', emoji: '🍖', spicy: 1,
       line: '不放酱油，全靠糖色炒出红亮——小火慢煨三十分钟，肥而不腻，入口即化。这是主席家乡的味道，急不得。',
-      phases: [480, 2040, 180]
+      phases: [480, 2040, 180],
+      raw: 'cubed raw pork belly with skin, layered fat and lean meat, a few rock sugar pieces beside',
+      cooked: 'glossy red-braised pork belly cubes stacked neatly, deep amber caramel glaze, Mao style hong shao rou'
     },
     {
       id: 'kwxia', name: '口味虾', emoji: '🦐', spicy: 3,
       line: '小龙虾要刷洗干净，紫苏和筒子骨汤是灵魂——夏天的长沙街头，人手一盆，剥得满手红油才叫过瘾！',
-      phases: [240, 840, 120]
+      phases: [240, 840, 120],
+      raw: 'fresh cleaned raw gray crayfish with perilla leaves, garlic cloves and dried chilies beside',
+      cooked: 'spicy Hunan crayfish with bright red shells in rich red chili oil broth, perilla leaves, served in a big bowl'
     },
     {
       id: 'beef', name: '小炒黄牛肉', emoji: '🐂', spicy: 2,
       line: '黄牛肉要逆着纹切薄片，大火快炒十八秒就出锅——嫩得咬得断，辣得直冒汗，下饭一绝！',
-      phases: [120, 420, 60]
+      phases: [120, 420, 60],
+      raw: 'thinly sliced raw marbled beef with red chili rings, ginger slices and garlic',
+      cooked: 'Hunan stir-fried sliced beef with red and green chilies and cilantro, glossy and tender'
     },
     {
       id: 'waipo', name: '外婆菜炒蛋', emoji: '🍳', spicy: 1,
       line: '外婆菜是坛子里腌出来的旧时光，配土鸡蛋一炒，咸香扑鼻——小孩子扒拉这道菜，能多吃两碗饭。',
-      phases: [120, 300, 60]
+      phases: [120, 300, 60],
+      raw: 'two brown eggs and a small bowl of dark chopped preserved vegetables',
+      cooked: 'golden fluffy scrambled eggs stir-fried with dark preserved vegetables, Hunan home style'
     },
     {
       id: 'lawei', name: '腊味合蒸', emoji: '🥓', spicy: 1,
       line: '腊肉、腊鱼、腊肠，都是冬天里柴火熏出来的——合蒸一钵，油润咸香，是湖南人过年待客的硬菜。',
-      phases: [300, 1320, 180]
+      phases: [300, 1320, 180],
+      raw: 'sliced cured pork belly, cured sausage links and a piece of cured fish',
+      cooked: 'steamed Hunan cured meats platter, glossy translucent amber slices of lap mei arranged neatly, light steam'
     },
     {
       id: 'tangyou', name: '糖油粑粑', emoji: '🍡', spicy: 0,
       line: '糯米粉揉成小团，糖油里慢慢煎到金黄软糯——不辣，是湘菜里的温柔，细伢子最爱这一口甜。',
-      phases: [180, 600, 120]
+      phases: [180, 600, 120],
+      raw: 'smooth white glutinous rice dough balls with brown sugar pieces beside',
+      cooked: 'golden caramelized sugar oil glutinous rice cakes stacked on a plate, shiny syrup glaze, osmanthus flowers sprinkled'
     },
     {
       id: 'dongan', name: '东安子鸡', emoji: '🐔', spicy: 2,
       line: '嫩仔鸡配米醋和红辣椒，酸辣鲜嫩——这道菜从唐朝的东安县一路香到今天，是湘菜里的老前辈。',
-      phases: [300, 1080, 120]
+      phases: [300, 1080, 120],
+      raw: 'chopped raw young chicken pieces with red chilies, ginger slices and scallions',
+      cooked: 'Hunan Dongan chicken, tender chicken pieces in glossy sour-spicy amber sauce with red chili strips and scallions'
     }
   ];
 
@@ -287,14 +311,13 @@
     $('card-info').classList.remove('show');
     var pool = shuffle(DISHES.slice());
     pool.forEach(function (d) {
-      var index = DISHES.indexOf(d);
       var card = document.createElement('button');
       card.className = 'card';
       card.innerHTML =
         '<div class="card-inner">' +
         '<div class="card-face card-back"><div class="seal">锅</div><div class="cb-txt">湘 味 食 谱</div></div>' +
         '<div class="card-face card-front">' +
-        '<div class="cf-img" role="img" aria-label="' + d.name + '" style="background-position:' + (index % 3 * 50) + '% ' + (Math.floor(index / 3) * 50) + '%"></div>' +
+        '<img class="cf-img" src="' + foodImg(d.cooked + STYLE_DISH) + '" alt="' + d.name + '">' +
         '<span class="cf-name">' + d.name + '</span>' +
         '<span class="cf-meta">约 ' + totalMin(d) + ' 分钟 · ' + spicyText(d) + '</span>' +
         '</div></div>';
@@ -348,24 +371,14 @@
     $('db-name').textContent = d.emoji + ' ' + d.name;
     $('db-meta').textContent = '全程约 ' + totalMin(d) + ' 分钟 · ' + spicyText(d);
 
-    // 九宫格本地图：每个场景只裁出当前菜品对应的一格。
-    var index = DISHES.indexOf(d);
-    var col = index % 3;
-    var row = Math.floor(index / 3);
-    function setDishImage(id, file, x, y, size) {
-      var image = $(id);
-      image.setAttribute('href', 'assets/' + file);
-      image.setAttribute('x', x - col * size);
-      image.setAttribute('y', y - row * size);
-      image.setAttribute('width', size * 3);
-      image.setAttribute('height', size * 3);
-      image.setAttribute('preserveAspectRatio', 'none');
-    }
-    setDishImage('prep-img', 'dishes-raw.png', 102, 48, 92);
-    setDishImage('cook-img-raw', 'dishes-raw.png', 104, 40, 92);
-    setDishImage('cook-img-cooked', 'dishes-cooked.png', 104, 40, 92);
+    // 注入三个场景的写实菜品图（生图 / 熟图）
+    var imgRaw = foodImg(d.raw + STYLE_RAW);
+    var imgCooked = foodImg(d.cooked + STYLE_DISH);
+    $('prep-img').setAttribute('href', imgRaw);
+    $('cook-img-raw').setAttribute('href', imgRaw);
+    $('cook-img-cooked').setAttribute('href', imgCooked);
     $('cook-img-cooked').setAttribute('opacity', 0);
-    setDishImage('serve-img', 'dishes-cooked.png', 106, 78, 88);
+    $('serve-img').setAttribute('href', imgCooked);
 
     // 油泡
     var bubs = '';
